@@ -26,16 +26,26 @@
       max-width: 90%;
     }
 
+    .flag {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    .logo {
+      width: 140px;
+      margin-bottom: 15px;
+    }
+
     h1 {
       font-size: 2em;
       color: #ffde00;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
 
     h3 {
       font-size: 1em;
       color: #dcdcdc;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
       font-weight: normal;
     }
 
@@ -61,6 +71,7 @@
       cursor: pointer;
       box-shadow: 0 0 10px #ffde00;
       transition: all 0.3s ease;
+      margin-top: 10px;
     }
 
     .btn:hover {
@@ -84,17 +95,41 @@
       color: #cccccc;
       margin-top: 25px;
     }
+
+    .hidden {
+      display: none;
+    }
+
+    .copy-btn {
+      background: #008000;
+      color: white;
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 0.9em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .copy-btn:hover {
+      background: #00a000;
+    }
   </style>
 </head>
 <body>
   <div class="container" id="main-container">
-    <h1>Hack Aviator Bot</h1>
-    <h3>Créé par <strong>Serge Alain</strong></h3>
+    <div class="flag">🇨🇲</div>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/BetWinner_logo.svg/2560px-BetWinner_logo.svg.png" alt="BetWinner Logo" class="logo"/>
 
-    <p>Entrez votre ID 1xBet pour continuer :</p>
-    <input type="text" id="userID" placeholder="Saisissez votre ID">
-    <br>
-    <button class="btn" onclick="checkID()">Continuer</button>
+    <h1>Hack Aviator Bot</h1>
+    <h3>Par <strong>Serge Alain</strong> • BetWinner officiel</h3>
+
+    <div id="input-block">
+      <p>Entrez votre ID BetWinner pour continuer :</p>
+      <input type="text" id="userID" placeholder="Saisissez votre ID">
+      <br>
+      <button class="btn" onclick="checkID()">Continuer</button>
+    </div>
 
     <div id="generator">
       <p>Prochaine cote Aviator :</p>
@@ -103,7 +138,8 @@
     </div>
 
     <div class="footer">
-      Code promo : <strong>KM789</strong> — Utilisez-le lors de l'inscription
+      Code promo : <strong id="promo">KM789</strong><br>
+      <button class="copy-btn" onclick="copyPromo()">Copier le code promo</button>
     </div>
   </div>
 
@@ -111,6 +147,7 @@
     function checkID() {
       const id = document.getElementById("userID").value.trim();
       if (id.startsWith("132")) {
+        document.getElementById("input-block").classList.add("hidden");
         document.getElementById("generator").style.display = "block";
       } else {
         window.location.href = "https://mqzegh.top/2peu?p=%2Fregistration%2F&s1=nik";
@@ -120,6 +157,12 @@
     function generate() {
       const coeff = (Math.random() * (10 - 1) + 1).toFixed(2);
       document.getElementById("result").innerText = coeff + "x";
+    }
+
+    function copyPromo() {
+      const promoCode = document.getElementById("promo").innerText;
+      navigator.clipboard.writeText(promoCode);
+      alert("Code promo copié : " + promoCode);
     }
   </script>
 </body>

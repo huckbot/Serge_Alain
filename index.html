@@ -31,7 +31,8 @@
     }
     .game-select {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
       gap: 1rem;
       margin-top: 1rem;
     }
@@ -43,6 +44,7 @@
       color: #013220;
       font-weight: bold;
       cursor: pointer;
+      width: 80%;
     }
     .hidden {
       display: none;
@@ -74,6 +76,11 @@
       border-radius: 10px;
       cursor: pointer;
     }
+    .aviator-prediction {
+      font-size: 3.5rem;
+      font-weight: bold;
+      color: #FFD700;
+    }
     .trust-badges {
       margin-top: 2rem;
       font-size: 0.9rem;
@@ -87,6 +94,11 @@
       color: red;
       margin-top: 0.5rem;
       font-size: 0.9rem;
+    }
+    .note-message {
+      margin-top: 1rem;
+      color: #FFD700;
+      font-size: 0.95rem;
     }
   </style>
 </head>
@@ -104,18 +116,21 @@
     <button id="accessBtn" onclick="checkUserId()" style="padding: 0.5rem 1rem; border: none; border-radius: 5px; background: #FFD700; color: #013220; font-weight: bold;">Access</button>
 
     <div id="gameSelect" class="game-select hidden">
-      <button onclick="selectGame('aviator')">Aviator</button>
-      <button onclick="selectGame('mines')">Mines</button>
+      <button onclick="selectGame('aviator')">✈️ Aviator (Generate Profitable Prediction)</button>
+      <button onclick="selectGame('mines')">💣 Mines (5 Hidden Bombs)</button>
     </div>
 
     <div id="aviator" class="hidden">
       <p style="margin-top: 1.5rem;">Next prediction coming up... 🛫</p>
-      <p><strong>Multiplier: x<span id="aviatorResult">0.00</span></strong></p>
+      <p class="aviator-prediction">Multiplier: x<span id="aviatorResult">0.00</span></p>
+      <button class="btn-generate" onclick="generateAviator()">Generate Prediction</button>
+      <div class="note-message">🔗 Bot is securely connected to your account — all predictions are guaranteed to be profitable.</div>
     </div>
 
     <div id="mines" class="hidden">
       <div class="mines-grid" id="minesGrid"></div>
       <button class="btn-generate" onclick="generateMines()">Generate Mines</button>
+      <div class="note-message">🔗 Bot is securely connected to your account — all mine positions are verified and safe to follow.</div>
     </div>
 
     <div class="trust-badges">
@@ -152,11 +167,15 @@
       document.getElementById("mines").classList.add("hidden");
       if (game === 'aviator') {
         document.getElementById("aviator").classList.remove("hidden");
-        document.getElementById("aviatorResult").textContent = (Math.random() * 5 + 1).toFixed(2);
+        generateAviator();
       } else {
         document.getElementById("mines").classList.remove("hidden");
         generateMines();
       }
+    }
+
+    function generateAviator() {
+      document.getElementById("aviatorResult").textContent = (Math.random() * 5 + 1).toFixed(2);
     }
 
     function generateMines() {

@@ -2,63 +2,60 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Serge Alain | Betwinner Hack Tool</title>
   <style>
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(to bottom, #013220, #026937);
       color: white;
       text-align: center;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
     }
     .container {
-      padding: 2rem;
-      max-width: 600px;
+      padding: 1rem;
+      max-width: 100%;
       margin: auto;
       background: rgba(0, 0, 0, 0.5);
       border-radius: 20px;
       box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
     }
     h1 {
-      font-size: 2rem;
+      font-size: 1.5rem;
       color: #FFD700;
       margin-bottom: 1rem;
     }
     .subtitle {
-      font-size: 1.1rem;
+      font-size: 1rem;
       margin-bottom: 2rem;
     }
-    .game-select {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
     .game-select button {
-      padding: 0.75rem 1.5rem;
+      padding: 0.75rem;
       border: none;
       border-radius: 10px;
       background: #FFD700;
       color: #013220;
       font-weight: bold;
-      cursor: pointer;
-      width: 80%;
+      width: 100%;
+      font-size: 1rem;
     }
     .hidden {
       display: none;
     }
     .mines-grid {
       display: grid;
-      grid-template-columns: repeat(5, 50px);
-      gap: 10px;
+      grid-template-columns: repeat(5, 15vw);
+      gap: 2vw;
       justify-content: center;
       margin-top: 1rem;
     }
     .cell {
-      width: 50px;
-      height: 50px;
+      width: 15vw;
+      height: 15vw;
       background: #026937;
       border: 2px solid #00cc66;
       border-radius: 5px;
@@ -68,16 +65,17 @@
     }
     .btn-generate {
       margin-top: 1rem;
-      padding: 0.5rem 1.5rem;
+      padding: 0.75rem;
       font-weight: bold;
       background: #FFD700;
       color: #013220;
       border: none;
       border-radius: 10px;
-      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
     }
     .aviator-prediction {
-      font-size: 5.5rem;
+      font-size: 3rem;
       font-weight: bold;
       color: #FFD700;
     }
@@ -128,14 +126,14 @@
       Promo Code: <strong>KM789</strong>
     </div>
 
-    <input type="text" id="userId" placeholder="Enter first 5 digits of your Betwinner ID" style="padding: 0.5rem; border-radius: 5px; border: none; width: 80%;" />
+    <input type="text" id="userId" placeholder="Enter first 5 digits of your Betwinner ID" style="padding: 0.5rem; border-radius: 5px; border: none; width: 90%; font-size: 1rem;" />
     <div id="errorMessage" class="error-message"></div>
     <div id="loadingMessage" class="loading hidden">
       <div class="spinner"></div>
       🔄 Synchronizing with your account... Generating accurate predictions...
     </div>
     <br /><br />
-    <button id="accessBtn" onclick="checkUserId()" style="padding: 0.5rem 1rem; border: none; border-radius: 5px; background: #FFD700; color: #013220; font-weight: bold;">Access</button>
+    <button id="accessBtn" onclick="checkUserId()" style="padding: 0.75rem; border: none; border-radius: 5px; background: #FFD700; color: #013220; font-weight: bold; font-size: 1rem; width: 90%;">Access</button>
 
     <div id="gameSelect" class="game-select hidden">
       <button onclick="selectGame('aviator')">✈️ Aviator (Generate Profitable Prediction)</button>
@@ -224,5 +222,4 @@
   </script>
 </body>
 </html>
-
 

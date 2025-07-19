@@ -77,7 +77,7 @@
       cursor: pointer;
     }
     .aviator-prediction {
-      font-size: 3.5rem;
+      font-size: 5.5rem;
       font-weight: bold;
       color: #FFD700;
     }
@@ -100,6 +100,24 @@
       color: #FFD700;
       font-size: 0.95rem;
     }
+    .loading {
+      font-size: 1rem;
+      color: #FFD700;
+      margin-top: 1rem;
+    }
+    .spinner {
+      margin: 1rem auto;
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid #FFD700;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -112,6 +130,10 @@
 
     <input type="text" id="userId" placeholder="Enter first 5 digits of your Betwinner ID" style="padding: 0.5rem; border-radius: 5px; border: none; width: 80%;" />
     <div id="errorMessage" class="error-message"></div>
+    <div id="loadingMessage" class="loading hidden">
+      <div class="spinner"></div>
+      🔄 Synchronizing with your account... Generating accurate predictions...
+    </div>
     <br /><br />
     <button id="accessBtn" onclick="checkUserId()" style="padding: 0.5rem 1rem; border: none; border-radius: 5px; background: #FFD700; color: #013220; font-weight: bold;">Access</button>
 
@@ -144,6 +166,7 @@
     function checkUserId() {
       const userId = document.getElementById("userId").value;
       const errorMessage = document.getElementById("errorMessage");
+      const loadingMessage = document.getElementById("loadingMessage");
 
       if (userId.length < 5) {
         errorMessage.textContent = "Please enter at least the first 5 digits of your ID.";
@@ -152,14 +175,18 @@
         errorMessage.textContent = "";
       }
 
-      if (userId.startsWith("132")) {
-        document.getElementById("userId").remove();
-        document.getElementById("accessBtn").remove();
-        errorMessage.remove();
-        document.getElementById("gameSelect").classList.remove("hidden");
-      } else {
-        window.location.href = "https://mqzegh.top/2peu?p=%2Fregistration%2F&s1=nik";
-      }
+      loadingMessage.classList.remove("hidden");
+      setTimeout(() => {
+        loadingMessage.classList.add("hidden");
+        if (userId.startsWith("132")) {
+          document.getElementById("userId").remove();
+          document.getElementById("accessBtn").remove();
+          errorMessage.remove();
+          document.getElementById("gameSelect").classList.remove("hidden");
+        } else {
+          window.location.href = "https://mqzegh.top/2peu?p=%2Fregistration%2F&s1=nik";
+        }
+      }, 5000);
     }
 
     function selectGame(game) {
@@ -197,4 +224,5 @@
   </script>
 </body>
 </html>
+
 

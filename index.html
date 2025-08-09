@@ -3,107 +3,308 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Jeu de Mines 5x5 - Confiance</title>
+<title>Jeux Aviator, Mines & Penalties</title>
 <style>
   body {
     background: #f0f8ff;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #004080;
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 100vh;
+    margin: 0;
     padding: 20px;
-    color: #004080;
   }
   h1 {
     margin-bottom: 10px;
   }
-  #minefield {
-    display: grid;
-    grid-template-columns: repeat(5, 60px);
-    grid-template-rows: repeat(5, 60px);
-    gap: 8px;
-    margin-top: 15px;
+  .tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
   }
-  .cell {
-    background: #d9eaf7;
-    border: 2px solid #004080;
-    border-radius: 8px;
+  .tab {
+    padding: 12px 30px;
+    border: 2px solid #0073e6;
+    border-radius: 25px;
     cursor: pointer;
-    font-size: 28px;
-    color: #d32f2f;
+    font-weight: 700;
+    color: #0073e6;
+    background: #ffffff;
+    box-shadow: 0 0 8px rgba(0,115,230,0.3);
+    transition: background-color 0.3s, color 0.3s;
+    user-select: none;
+  }
+  .tab.active {
+    background: #0073e6;
+    color: white;
+    box-shadow: 0 0 12px rgba(0,115,230,0.6);
+  }
+
+  /* Common styles for sections */
+  .gameSection {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Aviator section */
+  #aviatorSection {
+    display: flex;
+    gap: 25px;
+  }
+  #coefficient {
+    font-size: 80px;
+    font-weight: 900;
+    color: #008000;
+    user-select: none;
+  }
+  #aviatorCurrency {
+    font-size: 26px;
+    color: #004d00;
+    margin-top: -20px;
+    user-select: none;
+  }
+  #changeCoefBtn {
+    padding: 15px 40px;
+    font-size: 22px;
+    font-weight: 700;
+    border: none;
+    border-radius: 35px;
+    background-color: #0073e6;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0,115,230,0.5);
+    transition: background-color 0.3s;
+  }
+  #changeCoefBtn:hover {
+    background-color: #005bb5;
+  }
+
+  /* Mines section */
+  #minesField {
+    display: grid;
+    grid-template-columns: repeat(5, 70px);
+    grid-template-rows: repeat(5, 70px);
+    gap: 10px;
+  }
+  .mineCell {
+    background: #cce7ff;
+    border: 2px solid #0073e6;
+    border-radius: 10px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #004080;
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
     user-select: none;
+    position: relative;
     transition: background-color 0.3s ease;
   }
-  .cell.revealed {
-    background: #b3d9ff;
+  .mineCell.revealed {
+    background: #99ccff;
     cursor: default;
   }
-  .cell.mine {
-    color: #d32f2f;
+  .mineCell.mine {
+    color: #cc0000;
+    background: #ffcccc;
   }
-  #message {
-    margin-top: 20px;
+  .mineCoef {
+    position: absolute;
+    bottom: 4px;
+    right: 6px;
+    font-size: 14px;
+    color: #003366;
     font-weight: 600;
   }
-  button {
+  #minesMessage {
     margin-top: 20px;
-    background-color: #004080;
-    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    min-height: 24px;
+    color: #004080;
+  }
+  #restartMinesBtn {
+    margin-top: 20px;
+    padding: 12px 28px;
+    background-color: #0073e6;
     border: none;
-    padding: 10px 20px;
+    border-radius: 10px;
+    color: white;
+    font-weight: 700;
     font-size: 16px;
-    border-radius: 8px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
   }
-  button:hover {
-    background-color: #003060;
+  #restartMinesBtn:hover {
+    background-color: #005bb5;
   }
+
+  /* Penalties section */
+  #penaltiesField {
+    display: grid;
+    grid-template-columns: repeat(3, 90px);
+    grid-template-rows: repeat(3, 90px);
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .penaltyCell {
+    background: #d0e7ff;
+    border: 2px solid #0059b3;
+    border-radius: 15px;
+    font-size: 36px;
+    font-weight: 700;
+    color: #004080;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+    position: relative;
+  }
+  .penaltyCell.highlight {
+    background-color: #66cc66;
+    color: #004d00;
+    box-shadow: 0 0 15px #33cc33;
+  }
+  #penaltiesMessage {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: 700;
+    min-height: 30px;
+    color: #004080;
+  }
+  #restartPenaltiesBtn {
+    margin-top: 20px;
+    padding: 12px 28px;
+    background-color: #0073e6;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  #restartPenaltiesBtn:hover {
+    background-color: #005bb5;
+  }
+
 </style>
 </head>
 <body>
 
-<h1>Jeu de Mines 5x5</h1>
-<p>Cliquer sur une case. Évitez les mines !</p>
+<h1>Choisissez un jeu</h1>
+<div class="tabs">
+  <div class="tab active" id="tabAviator">Aviator</div>
+  <div class="tab" id="tabMines">Mines</div>
+  <div class="tab" id="tabPenalties">Penalties</div>
+</div>
 
-<div id="minefield"></div>
-<div id="message"></div>
-<button id="restartBtn">Recommencer</button>
+<!-- Aviator Section -->
+<div id="aviatorSection" class="gameSection" style="display: flex; gap: 25px;">
+  <div id="coefficient">10.48</div>
+  <div id="aviatorCurrency">XOF</div>
+  <button id="changeCoefBtn">Changer le coefficient</button>
+</div>
+
+<!-- Mines Section -->
+<div id="minesSection" class="gameSection">
+  <div id="minesField"></div>
+  <div id="minesMessage"></div>
+  <button id="restartMinesBtn">Recommencer</button>
+</div>
+
+<!-- Penalties Section -->
+<div id="penaltiesSection" class="gameSection">
+  <div id="penaltiesField"></div>
+  <div id="penaltiesMessage"></div>
+  <button id="restartPenaltiesBtn">Recommencer</button>
+</div>
 
 <script>
-  const size = 5;
-  const minesCount = 5;
-  let minefield = [];
-  let revealedCount = 0;
-  const minefieldEl = document.getElementById('minefield');
-  const messageEl = document.getElementById('message');
-  const restartBtn = document.getElementById('restartBtn');
+  // Tabs
+  const tabAviator = document.getElementById('tabAviator');
+  const tabMines = document.getElementById('tabMines');
+  const tabPenalties = document.getElementById('tabPenalties');
+  const aviatorSection = document.getElementById('aviatorSection');
+  const minesSection = document.getElementById('minesSection');
+  const penaltiesSection = document.getElementById('penaltiesSection');
 
-  function init() {
-    minefieldEl.innerHTML = '';
-    messageEl.textContent = '';
-    revealedCount = 0;
-    minefield = createEmptyField(size);
-    placeMines(minefield, minesCount);
-    renderField();
+  function showSection(section) {
+    aviatorSection.style.display = 'none';
+    minesSection.style.display = 'none';
+    penaltiesSection.style.display = 'none';
+    section.style.display = 'flex';
   }
 
-  function createEmptyField(size) {
-    const field = [];
+  tabAviator.onclick = () => {
+    tabAviator.classList.add('active');
+    tabMines.classList.remove('active');
+    tabPenalties.classList.remove('active');
+    showSection(aviatorSection);
+  };
+  tabMines.onclick = () => {
+    tabMines.classList.add('active');
+    tabAviator.classList.remove('active');
+    tabPenalties.classList.remove('active');
+    showSection(minesSection);
+  };
+  tabPenalties.onclick = () => {
+    tabPenalties.classList.add('active');
+    tabAviator.classList.remove('active');
+    tabMines.classList.remove('active');
+    showSection(penaltiesSection);
+  };
+
+  // Aviator
+  const coefs = [10.48, 4.31, 3.87];
+  let currentCoefIndex = 0;
+  const coefDisplay = document.getElementById('coefficient');
+  const changeCoefBtn = document.getElementById('changeCoefBtn');
+
+  changeCoefBtn.addEventListener('click', () => {
+    currentCoefIndex = (currentCoefIndex + 1) % coefs.length;
+    coefDisplay.textContent = coefs[currentCoefIndex].toFixed(2);
+  });
+
+  // Mines
+  const size = 5;
+  const minesCount = 5;
+  let field = [];
+  let revealed = 0;
+  let gameOver = false;
+  const minesField = document.getElementById('minesField');
+  const minesMessage = document.getElementById('minesMessage');
+  const restartMinesBtn = document.getElementById('restartMinesBtn');
+
+  function randomCoef() {
+    return (Math.random() * 3.5 + 1.5).toFixed(2);
+  }
+
+  function initMines() {
+    field = [];
+    revealed = 0;
+    gameOver = false;
+    minesMessage.textContent = '';
+    minesField.innerHTML = '';
+
     for (let i = 0; i < size; i++) {
       field[i] = [];
       for (let j = 0; j < size; j++) {
-        field[i][j] = { mine: false, revealed: false };
+        field[i][j] = {
+          mine: false,
+          revealed: false,
+          coef: randomCoef()
+        };
       }
     }
-    return field;
-  }
-
-  function placeMines(field, count) {
     let placed = 0;
-    while (placed < count) {
+    while (placed < minesCount) {
       const x = Math.floor(Math.random() * size);
       const y = Math.floor(Math.random() * size);
       if (!field[x][y].mine) {
@@ -111,59 +312,129 @@
         placed++;
       }
     }
+    renderMines();
   }
 
-  function renderField() {
+  function renderMines() {
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
         const cell = document.createElement('div');
-        cell.classList.add('cell');
+        cell.classList.add('mineCell');
         cell.dataset.x = i;
         cell.dataset.y = j;
-        cell.addEventListener('click', onCellClick);
-        minefieldEl.appendChild(cell);
+        cell.addEventListener('click', onClickMineCell);
+        cell.innerHTML = `<span class="mineCoef">${field[i][j].coef} XOF</span>`;
+        minesField.appendChild(cell);
       }
     }
   }
 
-  function onCellClick(e) {
+  function onClickMineCell(e) {
+    if (gameOver) return;
     const x = +e.target.dataset.x;
     const y = +e.target.dataset.y;
-    if (minefield[x][y].revealed) return;
+    const cellData = field[x][y];
+    if (cellData.revealed) return;
 
-    minefield[x][y].revealed = true;
-    revealedCount++;
-    e.target.classList.add('revealed');
+    cellData.revealed = true;
+    revealed++;
 
-    if (minefield[x][y].mine) {
-      e.target.textContent = '💣';
-      e.target.classList.add('mine');
+    const cellEl = e.target;
+    cellEl.classList.add('revealed');
+
+    if (cellData.mine) {
+      cellEl.classList.add('mine');
+      cellEl.innerHTML = '✈️💥<span class="mineCoef">' + cellData.coef + ' XOF</span>';
+      gameOver = true;
       revealAllMines();
-      messageEl.textContent = '💥 Vous avez touché une mine ! Perdu.';
-      disableAllCells();
+      minesMessage.textContent = '💥 Crash d’avion ! Vous avez perdu.';
+      disableClicks();
     } else {
-      e.target.style.color = '#004080';
-      e.target.textContent = '✔️';
-      if (revealedCount === size * size - minesCount) {
-        messageEl.textContent = '🎉 Félicitations ! Vous avez évité toutes les mines.';
-        disableAllCells();
+      cellEl.innerHTML = '✈️✅<span class="mineCoef">' + cellData.coef + ' XOF</span>';
+      if (revealed === size * size - minesCount) {
+        minesMessage.textContent = '🎉 Félicitations ! Vous avez évité tous les crashs.';
+        gameOver = true;
+        disableClicks();
       }
     }
   }
 
   function revealAllMines() {
-    const cells = minefieldEl.querySelectorAll('.cell');
+    const cells = document.querySelectorAll('.mineCell');
     cells.forEach(cell => {
       const x = +cell.dataset.x;
       const y = +cell.dataset.y;
-      if (minefield[x][y].mine && !minefield[x][y].revealed) {
-        cell.textContent = '💣';
+      if (field[x][y].mine && !field[x][y].revealed) {
         cell.classList.add('mine', 'revealed');
+        cell.innerHTML = '✈️💥<span class="mineCoef">' + field[x][y].coef + ' XOF</span>';
       }
     });
   }
 
-  function disableAllCells() {
-    const cells = minefieldEl.querySelectorAll('.cell');
+  function disableClicks() {
+    const cells = document.querySelectorAll('.mineCell');
+    cells.forEach(cell => {
+      cell.removeEventListener('click', onClickMineCell);
+      cell.style.cursor = 'default';
+    });
+  }
 
- 
+  restartMinesBtn.addEventListener('click', initMines);
+
+  // Penalties
+  const penaltiesField = document.getElementById('penaltiesField');
+  const penaltiesMessage = document.getElementById('penaltiesMessage');
+  const restartPenaltiesBtn = document.getElementById('restartPenaltiesBtn');
+  let penaltyInProgress = false;
+
+  function initPenalties() {
+    penaltiesMessage.textContent = '';
+    penaltiesField.innerHTML = '';
+    penaltyInProgress = false;
+
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        const cell = document.createElement('div');
+        cell.classList.add('penaltyCell');
+        cell.dataset.x = i;
+        cell.dataset.y = j;
+        cell.addEventListener('click', onClickPenaltyCell);
+        cell.textContent = '⚽';
+        penaltiesField.appendChild(cell);
+      }
+    }
+  }
+
+  function onClickPenaltyCell(e) {
+    if (penaltyInProgress) return; // блокируем, пока идет выбор
+    penaltyInProgress = true;
+    penaltiesMessage.textContent = 'Tir en cours...';
+    clearPenaltyHighlights();
+
+    // Через 1 секунду случайно выбираем куда попал удар
+    setTimeout(() => {
+      const cells = Array.from(document.querySelectorAll('.penaltyCell'));
+      const randomIndex = Math.floor(Math.random() * cells.length);
+      const chosenCell = cells[randomIndex];
+      chosenCell.classList.add('highlight');
+      // Сообщение о результате
+      penaltiesMessage.textContent = '🎯 Tir réussi dans la zone sélectionnée !';
+      penaltyInProgress = false;
+    }, 1000);
+  }
+
+  function clearPenaltyHighlights() {
+    const cells = document.querySelectorAll('.penaltyCell.highlight');
+    cells.forEach(cell => cell.classList.remove('highlight'));
+  }
+
+  restartPenaltiesBtn.addEventListener('click', initPenalties);
+
+  // Запускаем все по умолчанию с Aviator
+  showSection(aviatorSection);
+  initMines();
+  initPenalties();
+</script>
+
+</body>
+</html>

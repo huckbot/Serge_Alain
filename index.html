@@ -96,7 +96,7 @@
     background-color: #008ccc;
   }
 
-  /* === Mines с уже отмеченными минами === */
+  /* === Mines с заранее отмеченными минами === */
   #minesField {
     display: grid;
     grid-template-columns: repeat(5, 60px);
@@ -147,45 +147,53 @@
     background-color: #008ccc;
   }
 
-  /* === Penalties с воротами === */
+  /* === Penalties с воротами и цветной заливкой === */
   #penaltiesContainer {
     position: relative;
     width: 320px;
     height: 140px;
     margin-bottom: 10px;
     user-select: none;
-  }
-  #penaltiesGate {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
     border-radius: 20px;
-    box-shadow: 0 0 20px #66bbff88 inset;
+    box-shadow: 0 0 30px #66bbff88 inset;
+    background: linear-gradient(90deg, #0a3d91, #1e5fe5);
   }
+  /* Вместо картинки - фон ворот с 3 зонами */
   .penaltyZone {
     position: absolute;
     top: 15px;
     height: 110px;
     cursor: pointer;
-    transition: background-color 0.4s ease;
     border-radius: 14px;
-    border: 2px solid transparent;
+    border: 2.5px solid transparent;
+    transition: background-color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
   }
   .penaltyZone.left {
     left: 0;
     width: 30%;
+    background-color: #224bb099;
+    box-shadow: 0 0 15px #224bb0aa inset;
+    border-color: #224bb0cc;
   }
   .penaltyZone.center {
     left: 35%;
     width: 30%;
+    background-color: #44cc4499;
+    box-shadow: 0 0 15px #44cc44aa inset;
+    border-color: #44cc44cc;
   }
   .penaltyZone.right {
     right: 0;
     width: 30%;
+    background-color: #cc442299;
+    box-shadow: 0 0 15px #cc4422aa inset;
+    border-color: #cc4422cc;
   }
   .penaltyZone.highlight {
-    background-color: #7fff00aa;
-    border-color: #7fff00;
+    background-color: #7fff00cc !important;
+    border-color: #7fff00 !important;
+    box-shadow: 0 0 25px #7fff00dd inset !important;
+    cursor: default;
   }
   #generatePenaltyBtn {
     padding: 12px 32px;
@@ -246,13 +254,12 @@
 <div id="minesSection" class="gameSection">
   <div id="minesField"></div>
   <div id="minesMessage"></div>
-  <button id="restartMinesBtn">Recommencer</button>
+  <button id="restartMinesBtn">Changer Mines</button>
 </div>
 
 <!-- Penalties -->
 <div id="penaltiesSection" class="gameSection">
   <div id="penaltiesContainer">
-    <img id="penaltiesGate" src="https://i.imgur.com/QMqYdX5.png" alt="Portes de penalty" />
     <div class="penaltyZone left"></div>
     <div class="penaltyZone center"></div>
     <div class="penaltyZone right"></div>
@@ -289,6 +296,10 @@
       }
     });
     updateTrustMessage(tabName);
+    if(tabName === 'penalties') {
+      // при выборе пенальти подсвечиваем все 3 зоны цветом (они уже залиты в CSS)
+      clearPenaltyHighlights(false);
+    }
   }
   tabs.aviator.onclick = () => activateTab('aviator');
   tabs.mines.onclick = () => activateTab('mines');
@@ -325,17 +336,15 @@
 
   function renderMinesPreMarked() {
     minesField.innerHTML = '';
-    minePositions.forEach(i => {
-      const cell = document.createElement('div');
-      cell.className = 'mineCell mine';
-      cell.textContent = '💣';
-      minesField.appendChild(cell);
-    });
-    // Остальные пустые клетки
-    for (let i = 0; i < size*size - minesCount; i++) {
+    for (let i = 0; i < size*size; i++) {
       const cell = document.createElement('div');
       cell.className = 'mineCell';
-      cell.textContent = '?';
+      if (minePositions.includes(i)) {
+        cell.classList.add('mine');
+        cell.textContent = '💣';
+      } else {
+        cell.textContent = '?';
+      }
       minesField.appendChild(cell);
     }
     minesMessage.textContent = '🔒 Mines déjà marquées pour vous.';
@@ -347,7 +356,6 @@
   };
 
   // --- Penalties ---
-  const penaltiesContainer = document.getElementById('penaltiesContainer');
   const penaltyZones = document.querySelectorAll('.penaltyZone');
   const generatePenaltyBtn = document.getElementById('generatePenaltyBtn');
   const penaltiesMessage = document.getElementById('penaltiesMessage');
@@ -358,12 +366,15 @@
     right: "Angle droit",
   };
 
-  function clearPenaltyHighlights() {
-    penaltyZones.forEach(zone => zone.classList.remove('highlight'));
+  function clearPenaltyHighlights(clearAll = true) {
+    penaltyZones.forEach(zone => {
+      if(clearAll) zone.classList.remove('highlight');
+      // если clearAll = false (при смене вкладки пенальти) — оставляем базовую заливку зон (они залиты фоном)
+    });
   }
 
   generatePenaltyBtn.onclick = () => {
-    clearPenaltyHighlights();
+    clearPenaltyHighlights(true);
     penaltiesMessage.textContent = '⚽ Tir en cours...';
     const keys = Object.keys(penaltyNames);
     const randomZone = keys[Math.floor(Math.random() * keys.length)];
@@ -414,3 +425,4 @@
 
 </body>
 </html>
+

@@ -6,88 +6,96 @@
 <title>Signal Aviator - Côte d'Ivoire</title>
 <style>
   body {
-    background: #f0f8ff;
+    background: linear-gradient(135deg, #002b5c, #007a33);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #003366;
+    color: #f0f0f0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
     margin: 0;
+    text-shadow: 0 0 5px rgba(0,0,0,0.7);
   }
   h1 {
-    margin-bottom: 20px;
-    font-size: 2.5rem;
-  }
-  .signals {
-    display: flex;
-    gap: 40px;
     margin-bottom: 30px;
+    font-size: 2.8rem;
+    font-weight: 700;
+    text-align: center;
   }
   .signal {
-    background: #007acc;
-    color: white;
-    font-size: 4rem;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid #f0f0f0;
+    color: #fff;
+    font-size: 6rem;
     font-weight: 700;
-    padding: 20px 40px;
-    border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0, 122, 204, 0.5);
-    width: 150px;
+    padding: 50px 100px;
+    border-radius: 30px;
+    box-shadow: 0 0 20px #00ff88aa;
+    width: 320px;
     text-align: center;
     user-select: none;
+    margin-bottom: 40px;
+    transition: opacity 0.5s ease;
+    opacity: 1;
   }
   .currency {
-    font-size: 1.5rem;
+    font-size: 2.4rem;
     display: block;
-    margin-top: 6px;
+    margin-top: 12px;
   }
   button {
-    background: #009933;
+    background: #00a651;
     color: white;
-    font-size: 1.5rem;
-    font-weight: 600;
-    padding: 15px 40px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    padding: 18px 60px;
     border: none;
-    border-radius: 25px;
+    border-radius: 35px;
     cursor: pointer;
-    box-shadow: 0 5px 10px rgba(0,153,51,0.6);
+    box-shadow: 0 6px 15px rgba(0,166,81,0.8);
     transition: background-color 0.3s ease;
+    user-select: none;
   }
   button:hover {
-    background: #007a29;
+    background: #007a33;
   }
   .caption {
-    margin-top: 25px;
-    font-size: 1.2rem;
-    color: #005522;
+    margin-top: 30px;
+    font-size: 1.3rem;
+    max-width: 420px;
+    text-align: center;
+    color: #d4f9d4;
+    text-shadow: 0 0 8px #00ff88cc;
   }
 </style>
 </head>
 <body>
 
-<h1>🔥 Signal Aviator – Les 3 meilleurs chiffres du moment ! 🔥</h1>
+<h1>🔥 Signal Aviator – Le meilleur chiffre du moment en Côte d’Ivoire ! 🔥</h1>
 
-<div class="signals">
-  <div class="signal" id="signal1">10.03<span class="currency"> XOF</span></div>
-  <div class="signal" id="signal2">4.31<span class="currency"> XOF</span></div>
-  <div class="signal" id="signal3">4.07<span class="currency"> XOF</span></div>
-</div>
+<div class="signal" id="signal">10.03<span class="currency"> XOF</span></div>
 
-<button id="generateBtn">Générer de nouveaux signaux</button>
+<button id="generateBtn">Voir le prochain signal</button>
 
-<div class="caption">➡️ Appuyez sur « Générer » pour obtenir de nouveaux signaux gagnants. Jouez malin, gagnez gros ! 💰</div>
+<div class="caption">➡️ Appuyez sur « Voir le prochain signal » pour découvrir un nouveau chiffre gagnant. Jouez avec sagesse et confiance ! 💰🙏</div>
 
 <script>
-  function getRandomSignal() {
-    // Случайное число от 1.00 до 20.00 с двумя знаками после запятой
-    return (Math.random() * 19 + 1).toFixed(2);
-  }
+  const signals = [10.03, 4.31, 4.07];
+  let currentIndex = 0;
+  const signalDiv = document.getElementById('signal');
+  const btn = document.getElementById('generateBtn');
 
-  document.getElementById('generateBtn').addEventListener('click', () => {
-    document.getElementById('signal1').innerHTML = getRandomSignal() + '<span class="currency"> XOF</span>';
-    document.getElementById('signal2').innerHTML = getRandomSignal() + '<span class="currency"> XOF</span>';
-    document.getElementById('signal3').innerHTML = getRandomSignal() + '<span class="currency"> XOF</span>';
+  btn.addEventListener('click', () => {
+    // Плавно скрываем цифру
+    signalDiv.style.opacity = 0;
+
+    setTimeout(() => {
+      currentIndex = (currentIndex + 1) % signals.length;
+      signalDiv.innerHTML = signals[currentIndex].toFixed(2) + '<span class="currency"> XOF</span>';
+      // Плавно показываем новую цифру
+      signalDiv.style.opacity = 1;
+    }, 500);
   });
 </script>
 

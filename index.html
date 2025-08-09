@@ -3,22 +3,17 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Bot Prédicteur - Aviator, Mines & Penalties</title>
+<title>Bot Prédicteur Simplifié - Mines & Penalties</title>
 <style>
-  /* Сброс и базовые стили */
-  * {
-    box-sizing: border-box;
-  }
   body {
-    margin: 0;
+    margin: 0; padding: 25px 15px;
     background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #e1eaff;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 25px 15px;
+    min-height: 100vh;
     user-select: none;
   }
   h1 {
@@ -27,8 +22,6 @@
     font-size: 28px;
     text-shadow: 0 0 10px #66bbff;
   }
-
-  /* Табы */
   .tabs {
     display: flex;
     gap: 20px;
@@ -54,8 +47,6 @@
     color: #0b2143;
     box-shadow: 0 0 20px #66bbff;
   }
-
-  /* Общие стили для секций */
   .gameSection {
     width: 350px;
     max-width: 90vw;
@@ -68,43 +59,7 @@
     align-items: center;
   }
 
-  /* === Aviator === */
-  #aviatorSection {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  #coefficient {
-    font-size: 96px;
-    font-weight: 900;
-    color: #7fff00;
-    text-shadow: 0 0 18px #7fff00;
-    user-select: none;
-    margin-bottom: 8px;
-  }
-  #aviatorCurrency {
-    font-size: 28px;
-    font-weight: 600;
-    color: #a3ff8c;
-    margin-bottom: 28px;
-  }
-  #changeCoefBtn {
-    padding: 15px 48px;
-    font-size: 24px;
-    font-weight: 800;
-    border: none;
-    border-radius: 40px;
-    background-color: #00bfff;
-    color: #022e54;
-    cursor: pointer;
-    box-shadow: 0 0 18px #00bfff;
-    transition: background-color 0.3s ease;
-  }
-  #changeCoefBtn:hover {
-    background-color: #008ccc;
-  }
-
-  /* === Mines === */
+  /* Mines simplified */
   #minesField {
     display: grid;
     grid-template-columns: repeat(5, 60px);
@@ -117,15 +72,15 @@
     border-radius: 14px;
     border: 2px solid #66bbff;
     box-shadow: inset 0 0 8px #004080;
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 24px;
+    font-weight: 900;
     color: #a3d9ff;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
     cursor: pointer;
     transition: background-color 0.35s ease, color 0.35s ease;
+    user-select: none;
   }
   .mineCell.mine {
     background: #a31a1a;
@@ -138,14 +93,6 @@
     color: #d0eaff;
     cursor: default;
     box-shadow: inset 0 0 12px #004080;
-  }
-  .mineCoef {
-    position: absolute;
-    bottom: 4px;
-    right: 6px;
-    font-size: 11px;
-    color: #b1d0ff;
-    font-weight: 600;
   }
   #minesMessage {
     color: #a3ff8c;
@@ -171,13 +118,13 @@
     background-color: #008ccc;
   }
 
-  /* === Penalties === */
+  /* Penalties simplified */
   #penaltiesField {
     display: grid;
     grid-template-columns: repeat(3, 80px);
     grid-template-rows: repeat(3, 80px);
     gap: 14px;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     border-radius: 18px;
     padding: 10px;
     background: rgba(102,187,255,0.2);
@@ -193,7 +140,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
+    cursor: default;
     transition: background-color 0.3s ease, color 0.3s ease;
     position: relative;
   }
@@ -205,17 +152,8 @@
     background-color: #7fff00;
     color: #004400;
     box-shadow: 0 0 20px #7fff00;
-    cursor: default;
   }
-  #penaltiesMessage {
-    color: #a3ff8c;
-    font-weight: 700;
-    font-size: 22px;
-    height: 32px;
-    text-align: center;
-    margin-bottom: 10px;
-  }
-  #restartPenaltiesBtn {
+  #generatePenaltyBtn {
     padding: 12px 32px;
     background-color: #00bfff;
     border: none;
@@ -226,31 +164,44 @@
     cursor: pointer;
     box-shadow: 0 0 14px #00bfff;
     transition: background-color 0.3s ease;
+    margin-bottom: 10px;
   }
-  #restartPenaltiesBtn:hover {
+  #generatePenaltyBtn:hover {
     background-color: #008ccc;
+  }
+  #penaltiesMessage {
+    color: #a3ff8c;
+    font-weight: 700;
+    font-size: 20px;
+    height: 32px;
+    text-align: center;
+    min-height: 32px;
+    margin-bottom: 10px;
+  }
+
+  /* Trust messages */
+  #trustMessage {
+    margin-top: 18px;
+    font-size: 16px;
+    font-style: italic;
+    color: #b0e0ff;
+    text-align: center;
+    min-height: 48px;
+    max-width: 320px;
   }
 </style>
 </head>
 <body>
 
-<h1>Bot Prédicteur — Choisissez un jeu</h1>
+<h1>Bot Prédicteur Simplifié</h1>
 
 <div class="tabs">
-  <div class="tab active" id="tabAviator">Aviator</div>
-  <div class="tab" id="tabMines">Mines</div>
+  <div class="tab active" id="tabMines">Mines</div>
   <div class="tab" id="tabPenalties">Penalties</div>
 </div>
 
-<!-- Aviator -->
-<div id="aviatorSection" class="gameSection" style="display:flex; flex-direction: column; align-items: center;">
-  <div id="coefficient">10.48</div>
-  <div id="aviatorCurrency">XOF</div>
-  <button id="changeCoefBtn">Changer le coefficient</button>
-</div>
-
 <!-- Mines -->
-<div id="minesSection" class="gameSection">
+<div id="minesSection" class="gameSection" style="display:flex; flex-direction: column; align-items: center;">
   <div id="minesField"></div>
   <div id="minesMessage"></div>
   <button id="restartMinesBtn">Recommencer</button>
@@ -259,55 +210,35 @@
 <!-- Penalties -->
 <div id="penaltiesSection" class="gameSection">
   <div id="penaltiesField"></div>
+  <button id="generatePenaltyBtn">Générer un tir</button>
   <div id="penaltiesMessage"></div>
-  <button id="restartPenaltiesBtn">Recommencer</button>
 </div>
 
+<!-- Trust messages -->
+<div id="trustMessage"></div>
+
 <script>
-  // --- Табы ---
-  const tabAviator = document.getElementById('tabAviator');
+  // Табы
   const tabMines = document.getElementById('tabMines');
   const tabPenalties = document.getElementById('tabPenalties');
-  const aviatorSection = document.getElementById('aviatorSection');
   const minesSection = document.getElementById('minesSection');
   const penaltiesSection = document.getElementById('penaltiesSection');
+  const trustMessage = document.getElementById('trustMessage');
 
-  function showSection(section) {
-    aviatorSection.style.display = 'none';
-    minesSection.style.display = 'none';
-    penaltiesSection.style.display = 'none';
-    section.style.display = 'flex';
-  }
-
-  tabAviator.onclick = () => {
-    tabAviator.classList.add('active');
-    tabMines.classList.remove('active');
-    tabPenalties.classList.remove('active');
-    showSection(aviatorSection);
-  };
   tabMines.onclick = () => {
     tabMines.classList.add('active');
-    tabAviator.classList.remove('active');
     tabPenalties.classList.remove('active');
-    showSection(minesSection);
+    minesSection.style.display = 'flex';
+    penaltiesSection.style.display = 'none';
+    updateTrustMessage('Mines');
   };
   tabPenalties.onclick = () => {
     tabPenalties.classList.add('active');
-    tabAviator.classList.remove('active');
     tabMines.classList.remove('active');
-    showSection(penaltiesSection);
+    minesSection.style.display = 'none';
+    penaltiesSection.style.display = 'flex';
+    updateTrustMessage('Penalties');
   };
-
-  // --- Aviator ---
-  const coefs = [10.48, 4.31, 3.87];
-  let currentCoefIndex = 0;
-  const coefDisplay = document.getElementById('coefficient');
-  const changeCoefBtn = document.getElementById('changeCoefBtn');
-
-  changeCoefBtn.addEventListener('click', () => {
-    currentCoefIndex = (currentCoefIndex + 1) % coefs.length;
-    coefDisplay.textContent = coefs[currentCoefIndex].toFixed(2);
-  });
 
   // --- Mines ---
   const size = 5;
@@ -318,10 +249,6 @@
   const minesField = document.getElementById('minesField');
   const minesMessage = document.getElementById('minesMessage');
   const restartMinesBtn = document.getElementById('restartMinesBtn');
-
-  function randomCoef() {
-    return (Math.random() * 3.5 + 1.5).toFixed(2);
-  }
 
   function initMines() {
     field = [];
@@ -336,7 +263,6 @@
         field[i][j] = {
           mine: false,
           revealed: false,
-          coef: randomCoef()
         };
       }
     }
@@ -349,22 +275,18 @@
         placed++;
       }
     }
-    renderMines(true); // показываем мины сразу
+    renderMines();
   }
 
-  function renderMines(showMines = false) {
+  function renderMines() {
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
         const cell = document.createElement('div');
         cell.classList.add('mineCell');
-        if (field[i][j].mine) cell.classList.add('mine');
         cell.dataset.x = i;
         cell.dataset.y = j;
-        cell.innerHTML = `<span class="mineCoef">${field[i][j].coef} XOF</span>`;
+        cell.textContent = '?';
         if (!gameOver) cell.addEventListener('click', onClickMineCell);
-        if (showMines && field[i][j].mine) {
-          cell.style.opacity = '0.8';
-        }
         minesField.appendChild(cell);
       }
     }
@@ -381,17 +303,18 @@
     revealed++;
 
     const cellEl = e.target;
-    cellEl.classList.add('revealed');
-
     if (cellData.mine) {
+      cellEl.textContent = '💣';
+      cellEl.classList.add('mine');
       gameOver = true;
-      minesMessage.textContent = '💥 Crash d’avion ! Vous avez perdu.';
+      minesMessage.textContent = '💥 Perdu ! Mine explosée.';
       revealAllMines();
       disableClicks();
     } else {
-      cellEl.innerHTML = '✈️✅<span class="mineCoef">' + cellData.coef + ' XOF</span>';
+      cellEl.textContent = '✅';
+      cellEl.classList.add('revealed');
       if (revealed === size * size - minesCount) {
-        minesMessage.textContent = '🎉 Félicitations ! Vous avez évité tous les crashs.';
+        minesMessage.textContent = '🎉 Gagné ! Mines évitées.';
         gameOver = true;
         disableClicks();
       }
@@ -404,8 +327,8 @@
       const x = +cell.dataset.x;
       const y = +cell.dataset.y;
       if (field[x][y].mine && !field[x][y].revealed) {
-        cell.classList.add('revealed');
-        cell.innerHTML = '✈️💥<span class="mineCoef">' + field[x][y].coef + ' XOF</span>';
+        cell.textContent = '💣';
+        cell.classList.add('mine');
       }
     });
   }
@@ -420,49 +343,42 @@
 
   restartMinesBtn.addEventListener('click', () => {
     gameOver = false;
+    minesMessage.textContent = '';
     initMines();
   });
 
   // --- Penalties ---
   const penaltiesField = document.getElementById('penaltiesField');
   const penaltiesMessage = document.getElementById('penaltiesMessage');
-  const restartPenaltiesBtn = document.getElementById('restartPenaltiesBtn');
-  let penaltyInProgress = false;
+  const generatePenaltyBtn = document.getElementById('generatePenaltyBtn');
+
+  const penaltyPositions = [
+    { x: 0, y: 0, name: 'Coin gauche' },
+    { x: 0, y: 1, name: 'Milieu gauche' },
+    { x: 0, y: 2, name: 'Coin bas gauche' },
+    { x: 1, y: 0, name: 'Centre haut' },
+    { x: 1, y: 1, name: 'Milieu centre' },
+    { x: 1, y: 2, name: 'Centre bas' },
+    { x: 2, y: 0, name: 'Coin haut droit' },
+    { x: 2, y: 1, name: 'Milieu droit' },
+    { x: 2, y: 2, name: 'Coin bas droit' },
+  ];
 
   function initPenalties() {
     penaltiesMessage.textContent = '';
     penaltiesField.innerHTML = '';
-    penaltyInProgress = false;
 
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         const cell = document.createElement('div');
         cell.classList.add('penaltyCell');
+        if (i === 1 && j === 1) cell.classList.add('center');
         cell.dataset.x = i;
         cell.dataset.y = j;
         cell.textContent = '⚽';
-        // Отмечаем центр и углы для реалистичности
-        if (i === 1 && j === 1) cell.classList.add('center');
-        cell.addEventListener('click', onClickPenaltyCell);
         penaltiesField.appendChild(cell);
       }
     }
-  }
-
-  function onClickPenaltyCell(e) {
-    if (penaltyInProgress) return;
-    penaltyInProgress = true;
-    penaltiesMessage.textContent = 'Tir en cours...';
-    clearPenaltyHighlights();
-
-    setTimeout(() => {
-      const cells = Array.from(document.querySelectorAll('.penaltyCell'));
-      const randomIndex = Math.floor(Math.random() * cells.length);
-      const chosenCell = cells[randomIndex];
-      chosenCell.classList.add('highlight');
-      penaltiesMessage.textContent = '🎯 Tir réussi dans la zone sélectionnée !';
-      penaltyInProgress = false;
-    }, 1000);
   }
 
   function clearPenaltyHighlights() {
@@ -470,12 +386,49 @@
     cells.forEach(cell => cell.classList.remove('highlight'));
   }
 
-  restartPenaltiesBtn.addEventListener('click', initPenalties);
+  generatePenaltyBtn.addEventListener('click', () => {
+    clearPenaltyHighlights();
+    penaltiesMessage.textContent = '⚽ Tir en cours...';
+    const cells = Array.from(document.querySelectorAll('.penaltyCell'));
+    const randomIndex = Math.floor(Math.random() * cells.length);
+    const chosenCell = cells[randomIndex];
+    chosenCell.classList.add('highlight');
 
-  // --- Запуск ---
-  showSection(aviatorSection);
+    const pos = penaltyPositions.find(p => p.x == chosenCell.dataset.x && p.y == chosenCell.dataset.y);
+    setTimeout(() => {
+      penaltiesMessage.textContent = `🎯 Le tir est dans: ${pos.name}`;
+    }, 1000);
+  });
+
+  // --- Trust messages ---
+  const trustMessages = {
+    Mines: [
+      "🔒 100% fiable - testé par des milliers en Côte d'Ivoire.",
+      "🙏 Jouez propre, gagnez propre. Dieu est avec nous.",
+      "🔥 Nos prédictions vous aident à gagner en toute confiance.",
+      "💡 Faites le bon choix, démarrez avec confiance aujourd'hui!",
+      "⭐ Jeu honnête, résultats transparents, gagnez sans stress."
+    ],
+    Penalties: [
+      "⚽ Tir parfait ? Laissez la chance vous sourire.",
+      "💪 La confiance est la clé. Le bot prédit, vous gagnez.",
+      "🌟 Toujours prêt pour un but gagnant. Jouez serein.",
+      "🙏 Dieu guide vos pas, nous guidons vos tirs.",
+      "🔥 Prédictions fiables pour les vrais joueurs de Côte d'Ivoire."
+    ]
+  };
+
+  function updateTrustMessage(game) {
+    const arr = trustMessages[game];
+    const msg = arr[Math.floor(Math.random() * arr.length)];
+    trustMessage.textContent = msg;
+  }
+
+  // --- Инициализация ---
+  tabMines.click();
   initMines();
   initPenalties();
+
 </script>
 
 </body>

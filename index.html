@@ -3,101 +3,167 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Signal Aviator - Côte d'Ivoire</title>
+<title>Jeu de Mines 5x5 - Confiance</title>
 <style>
   body {
-    background: linear-gradient(135deg, #002b5c, #007a33);
+    background: #f0f8ff;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #f0f0f0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-    text-shadow: 0 0 5px rgba(0,0,0,0.7);
+    padding: 20px;
+    color: #004080;
   }
   h1 {
-    margin-bottom: 30px;
-    font-size: 2.8rem;
-    font-weight: 700;
-    text-align: center;
+    margin-bottom: 10px;
   }
-  .signal {
-    background: rgba(255, 255, 255, 0.15);
-    border: 2px solid #f0f0f0;
-    color: #fff;
-    font-size: 6rem;
-    font-weight: 700;
-    padding: 50px 100px;
-    border-radius: 30px;
-    box-shadow: 0 0 20px #00ff88aa;
-    width: 320px;
-    text-align: center;
+  #minefield {
+    display: grid;
+    grid-template-columns: repeat(5, 60px);
+    grid-template-rows: repeat(5, 60px);
+    gap: 8px;
+    margin-top: 15px;
+  }
+  .cell {
+    background: #d9eaf7;
+    border: 2px solid #004080;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 28px;
+    color: #d32f2f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     user-select: none;
-    margin-bottom: 40px;
-    transition: opacity 0.5s ease;
-    opacity: 1;
+    transition: background-color 0.3s ease;
   }
-  .currency {
-    font-size: 2.4rem;
-    display: block;
-    margin-top: 12px;
+  .cell.revealed {
+    background: #b3d9ff;
+    cursor: default;
+  }
+  .cell.mine {
+    color: #d32f2f;
+  }
+  #message {
+    margin-top: 20px;
+    font-weight: 600;
   }
   button {
-    background: #00a651;
+    margin-top: 20px;
+    background-color: #004080;
     color: white;
-    font-size: 1.8rem;
-    font-weight: 700;
-    padding: 18px 60px;
     border: none;
-    border-radius: 35px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 8px;
     cursor: pointer;
-    box-shadow: 0 6px 15px rgba(0,166,81,0.8);
-    transition: background-color 0.3s ease;
-    user-select: none;
   }
   button:hover {
-    background: #007a33;
-  }
-  .caption {
-    margin-top: 30px;
-    font-size: 1.3rem;
-    max-width: 420px;
-    text-align: center;
-    color: #d4f9d4;
-    text-shadow: 0 0 8px #00ff88cc;
+    background-color: #003060;
   }
 </style>
 </head>
 <body>
 
-<h1>🔥 Signal Aviator – Le meilleur chiffre du moment en Côte d’Ivoire ! 🔥</h1>
+<h1>Jeu de Mines 5x5</h1>
+<p>Cliquer sur une case. Évitez les mines !</p>
 
-<div class="signal" id="signal">10.03<span class="currency"> XOF</span></div>
-
-<button id="generateBtn">Voir le prochain signal</button>
-
-<div class="caption">➡️ Appuyez sur « Voir le prochain signal » pour découvrir un nouveau chiffre gagnant. Jouez avec sagesse et confiance ! 💰🙏</div>
+<div id="minefield"></div>
+<div id="message"></div>
+<button id="restartBtn">Recommencer</button>
 
 <script>
-  const signals = [10.03, 4.31, 4.07];
-  let currentIndex = 0;
-  const signalDiv = document.getElementById('signal');
-  const btn = document.getElementById('generateBtn');
+  const size = 5;
+  const minesCount = 5;
+  let minefield = [];
+  let revealedCount = 0;
+  const minefieldEl = document.getElementById('minefield');
+  const messageEl = document.getElementById('message');
+  const restartBtn = document.getElementById('restartBtn');
 
-  btn.addEventListener('click', () => {
-    // Плавно скрываем цифру
-    signalDiv.style.opacity = 0;
+  function init() {
+    minefieldEl.innerHTML = '';
+    messageEl.textContent = '';
+    revealedCount = 0;
+    minefield = createEmptyField(size);
+    placeMines(minefield, minesCount);
+    renderField();
+  }
 
-    setTimeout(() => {
-      currentIndex = (currentIndex + 1) % signals.length;
-      signalDiv.innerHTML = signals[currentIndex].toFixed(2) + '<span class="currency"> XOF</span>';
-      // Плавно показываем новую цифру
-      signalDiv.style.opacity = 1;
-    }, 500);
-  });
-</script>
+  function createEmptyField(size) {
+    const field = [];
+    for (let i = 0; i < size; i++) {
+      field[i] = [];
+      for (let j = 0; j < size; j++) {
+        field[i][j] = { mine: false, revealed: false };
+      }
+    }
+    return field;
+  }
 
-</body>
-</html>
+  function placeMines(field, count) {
+    let placed = 0;
+    while (placed < count) {
+      const x = Math.floor(Math.random() * size);
+      const y = Math.floor(Math.random() * size);
+      if (!field[x][y].mine) {
+        field[x][y].mine = true;
+        placed++;
+      }
+    }
+  }
+
+  function renderField() {
+    for (let i = 0; i < size; i++) {
+      for (let j = 0; j < size; j++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        cell.dataset.x = i;
+        cell.dataset.y = j;
+        cell.addEventListener('click', onCellClick);
+        minefieldEl.appendChild(cell);
+      }
+    }
+  }
+
+  function onCellClick(e) {
+    const x = +e.target.dataset.x;
+    const y = +e.target.dataset.y;
+    if (minefield[x][y].revealed) return;
+
+    minefield[x][y].revealed = true;
+    revealedCount++;
+    e.target.classList.add('revealed');
+
+    if (minefield[x][y].mine) {
+      e.target.textContent = '💣';
+      e.target.classList.add('mine');
+      revealAllMines();
+      messageEl.textContent = '💥 Vous avez touché une mine ! Perdu.';
+      disableAllCells();
+    } else {
+      e.target.style.color = '#004080';
+      e.target.textContent = '✔️';
+      if (revealedCount === size * size - minesCount) {
+        messageEl.textContent = '🎉 Félicitations ! Vous avez évité toutes les mines.';
+        disableAllCells();
+      }
+    }
+  }
+
+  function revealAllMines() {
+    const cells = minefieldEl.querySelectorAll('.cell');
+    cells.forEach(cell => {
+      const x = +cell.dataset.x;
+      const y = +cell.dataset.y;
+      if (minefield[x][y].mine && !minefield[x][y].revealed) {
+        cell.textContent = '💣';
+        cell.classList.add('mine', 'revealed');
+      }
+    });
+  }
+
+  function disableAllCells() {
+    const cells = minefieldEl.querySelectorAll('.cell');
+
+ 

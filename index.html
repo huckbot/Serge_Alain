@@ -1,69 +1,94 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aviator Signal Bot</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Signal Aviator - Côte d'Ivoire</title>
 <style>
-    body {
-        background-color: #0b3b2e;
-        color: white;
-        font-family: Arial, sans-serif;
-        text-align: center;
-        padding-top: 80px;
-    }
-    .signal-box {
-        background: #1c5d45;
-        border-radius: 15px;
-        display: inline-block;
-        padding: 30px 50px;
-        box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
-    }
-    .signal-value {
-        font-size: 48px;
-        font-weight: bold;
-        color: #ffd700;
-    }
-    button {
-        margin-top: 20px;
-        background-color: #ffd700;
-        color: black;
-        font-size: 18px;
-        padding: 10px 25px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-    }
-    button:hover {
-        background-color: #ffb300;
-    }
-    .trust-text {
-        margin-top: 30px;
-        font-size: 14px;
-        color: #ccc;
-    }
+  body {
+    background: #f0f8ff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #003366;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+  h1 {
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+  }
+  .signals {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 30px;
+  }
+  .signal {
+    background: #007acc;
+    color: white;
+    font-size: 4rem;
+    font-weight: 700;
+    padding: 20px 40px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 122, 204, 0.5);
+    width: 150px;
+    text-align: center;
+    user-select: none;
+  }
+  .currency {
+    font-size: 1.5rem;
+    display: block;
+    margin-top: 6px;
+  }
+  button {
+    background: #009933;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 5px 10px rgba(0,153,51,0.6);
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background: #007a29;
+  }
+  .caption {
+    margin-top: 25px;
+    font-size: 1.2rem;
+    color: #005522;
+  }
 </style>
 </head>
 <body>
 
-<div class="signal-box">
-    <div class="signal-value" id="signal">10.03 XOF</div>
-    <button onclick="generateSignal()">Generate Signals</button>
+<h1>🔥 Signal Aviator – Les 3 meilleurs chiffres du moment ! 🔥</h1>
+
+<div class="signals">
+  <div class="signal" id="signal1">10.03<span class="currency"> XOF</span></div>
+  <div class="signal" id="signal2">4.31<span class="currency"> XOF</span></div>
+  <div class="signal" id="signal3">4.07<span class="currency"> XOF</span></div>
 </div>
 
-<div class="trust-text">
-    100% officiel — Résultats garantis jusqu’à 89% de victoires
-</div>
+<button id="generateBtn">Générer de nouveaux signaux</button>
+
+<div class="caption">➡️ Appuyez sur « Générer » pour obtenir de nouveaux signaux gagnants. Jouez malin, gagnez gros ! 💰</div>
 
 <script>
-    const signals = ["10.03 XOF", "4.31 XOF", "4.07 XOF"];
-    let index = 0;
+  function getRandomSignal() {
+    // Случайное число от 1.00 до 20.00 с двумя знаками после запятой
+    return (Math.random() * 19 + 1).toFixed(2);
+  }
 
-    function generateSignal() {
-        index = (index + 1) % signals.length;
-        document.getElementById("signal").textContent = signals[index];
-    }
+  document.getElementById('generateBtn').addEventListener('click', () => {
+    document.getElementById('signal1').innerHTML = getRandomSignal() + '<span class="currency"> XOF</span>';
+    document.getElementById('signal2').innerHTML = getRandomSignal() + '<span class="currency"> XOF</span>';
+    document.getElementById('signal3').innerHTML = getRandomSignal() + '<span class="currency"> XOF</span>';
+  });
 </script>
 
 </body>
